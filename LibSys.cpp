@@ -41,7 +41,7 @@ int main()
             cout << "\n========================================== TEACHER LOGIN ========================================== ";
             cout << "\n\n Please enter your username: ";
             cin >> adminUser;
-            cout << "\n Please enter your password:";
+            cout << "\n Please enter your password: ";
             cin >> adminPassword;
 
             if ((strcmp(adminUser, ADMINUSER) == 0) && (strcmp(adminPassword, ADMINPASSWORD) == 0))
