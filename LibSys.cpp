@@ -21,7 +21,7 @@ int main()
 {
     int outerChoice = 0;
 
-    while (outerChoice != 3)
+    while (outerChoice != 9)
     {
         system("cls");
 
@@ -52,7 +52,7 @@ int main()
                 system("cls");
                 int innerChoice = 0;
 
-                while (innerChoice != 3)
+                while (innerChoice != 9)
                 {
                     cout << "\n\n Librarian login is successful!! Press any button to continue..";
                     cout << "\n1. Add new book";
@@ -109,7 +109,7 @@ int main()
             {
                 int innerChoice = 0;
 
-                while (innerChoice != 3)
+                while (innerChoice != 9)
                 {
                     system("cls");
                     cout << "\n1. Borrow a Book";
@@ -149,7 +149,7 @@ int main()
                 getchar();
             }
         }
-        else if (outerChoice != 3)
+        else if (outerChoice != 9)
         {
             cout << "\n\n Invalid choice. Press any key to continue..";
             getchar();
