@@ -72,7 +72,7 @@ public:
     {
         clrscr();
          cout<<"\nNEW STUDENT ENTRY...\n";
-        cout<<"\nEnter The admission no. ";
+        cout<<"\nEnter The Admission No. ";
         cin>>admno;
         cout<<"\n\nEnter The Name of The Student ";
         gets(name);
@@ -86,7 +86,7 @@ public:
         cout<<"\nAdmission no. : "<<admno;
         cout<<"\nStudent Name : ";
         puts(name);
-        cout<<"\nNo of Book issued : "<<token;
+        cout<<"\nNo of Book Issued : "<<token;
         if(token==1)
             cout<<"\nBook No "<<stbno;
     }
@@ -127,23 +127,14 @@ public:
     void report()
     {cout<<"\t"<<admno<<setw(20)<<name<<setw(10)<<token<<endl;}
 
-};         //class ends here
+};         
 
 
-
-
-//***************************************************************
-//        global declaration for stream object, object
-//****************************************************************
 
 fstream fp,fp1;
 book bk;
 student st;
 
-
-//***************************************************************
-//        function to write in file
-//****************************************************************
 
 void write_book()
 {
@@ -168,16 +159,12 @@ void write_student()
     {
         st.create_student();
         fp.write((char*)&st,sizeof(student));
-        cout<<"\n\ndo you want to add more record..(y/n?)";
+        cout<<"\n\nDo you want to add more record..(y/n?)";
         cin>>ch;
     }while(ch=='y'||ch=='Y');
     fp.close();
 }
 
-
-//***************************************************************
-//        function to read specific record from file
-//****************************************************************
 
 
 void display_spb(char n[])
@@ -221,18 +208,13 @@ void display_sps(char n[])
 }
 
 
-//***************************************************************
-//        function to modify record of file
-//****************************************************************
-
-
 void modify_book()
 {
     char n[6];
     int found=0;
     clrscr();
     cout<<"\n\n\tMODIFY BOOK REOCORD.... ";
-    cout<<"\n\n\tEnter The book no. of The book";
+    cout<<"\n\n\tEnter The Book No. Of The Book";
     cin>>n;
     fp.open("book.dat",ios::in|ios::out);
     while(fp.read((char*)&bk,sizeof(book)) && found==0)
@@ -240,7 +222,7 @@ void modify_book()
         if(strcmpi(bk.retbno(),n)==0)
         {
             bk.show_book();
-            cout<<"\nEnter The New Details of book"<<endl;
+            cout<<"\nEnter The New Details of Book"<<endl;
             bk.modify_book();
             int pos=-1*sizeof(bk);
                 fp.seekp(pos,ios::cur);
@@ -467,9 +449,6 @@ void book_issue()
       fp1.close();
 }
 
-//***************************************************************
-//        function to deposit book
-//****************************************************************
 
 void book_deposit()
 {
@@ -522,13 +501,6 @@ void book_deposit()
   fp1.close();
   }
 
-
-
-
-//***************************************************************
-//        INTRODUCTION FUNCTION
-//****************************************************************
-
 void intro()
 {
     clrscr();
@@ -538,16 +510,12 @@ void intro()
     cout<<"MANAGEMENT";
     gotoxy(35,17);
     cout<<"SYSTEM";
-    cout<<"\n\nMADE BY : YOUR NAME";
-    cout<<"\n\nSCHOOL : SCHOOL NAME";
+    cout<<"\n\nMADE BY : FELIX MIGUEL M ELEAZAR, ELKES PEARL P. LOPEZ, JEMIMA RUTH C. MARA ";
+    cout<<"\n\nSCHOOL : BATANGAS STATE UNIVERSITY ALANGILAN CAMPUS II";
     getch();
 }
 
 
-
-//***************************************************************
-//        ADMINISTRATOR MENU FUNCTION
-//****************************************************************
 
 void admin_menu()
 {
@@ -587,7 +555,7 @@ void admin_menu()
         case 8: {
                    char num[6];
                    clrscr();
-                   cout<<"\n\n\tPlease Enter The book No. ";
+                   cout<<"\n\n\tPlease Enter The Book No. ";
                    cin>>num;
                    display_spb(num);
                    break;
@@ -634,7 +602,3 @@ void main()
         }
         }while(ch!='4');
 }
-
-//***************************************************************
-//                END OF PROJECT
-//***************************************************************
