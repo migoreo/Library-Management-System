@@ -8,7 +8,7 @@ using namespace std;
 const char ADMINUSER[] = "admin";                       // Example admin username
 const char ADMINPASSWORD[] = "password";                // Example admin password
 const char USER[] = "student";                          // Example student username
-const char USERPASSWORD[] = "123456";                   // Example student password
+const char USERPASSWORD[] = "pass";                   // Example student password
 
 void addBook();
 void deleteBook();
@@ -21,7 +21,7 @@ int main()
 {
     int outerChoice = 0;
 
-    while (outerChoice != 9)
+    while (outerChoice != 3)
     {
         system("cls");
 
@@ -52,7 +52,7 @@ int main()
                 system("cls");
                 int innerChoice = 0;
 
-                while (innerChoice != 9)
+                while (innerChoice != 3)
                 {
                     cout << "\n\n Librarian login is successful!! Press any button to continue..";
                     cout << "\n1. Add new book";
@@ -102,14 +102,14 @@ int main()
             cout << "\n========================================== Student Login ==========================================";
             cout << "\n\n Please enter your username: ";
             cin >> studentUser;
-            cout << "\n Please enter your password:";
+            cout << "\n Please enter your password: ";
             cin >> studentPassword;
 
             if ((strcmp(studentUser, USER) == 0) && (strcmp(studentPassword, USERPASSWORD) == 0))
             {
                 int innerChoice = 0;
 
-                while (innerChoice != 9)
+                while (innerChoice != 3)
                 {
                     system("cls");
                     cout << "\n1. Borrow a Book";
@@ -149,7 +149,7 @@ int main()
                 getchar();
             }
         }
-        else if (outerChoice != 9)
+        else if (outerChoice != 3)
         {
             cout << "\n\n Invalid choice. Press any key to continue..";
             getchar();
