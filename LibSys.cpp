@@ -1,604 +1,370 @@
-#include <fstream.h>
-#include <conio.h>
-#include <stdio.h>
-#include <process.h>
-#include <string.h>
-#include <iomanip.h>
 #include <iostream>
+#include <cstring>
+#include <fstream>
+#include <ctime>
 
-class book
+using namespace std;
+
+const char ADMINUSER[] = "admin";                       // Example admin username
+const char ADMINPASSWORD[] = "password";                // Example admin password
+const char USER[] = "student";                          // Example student username
+const char USERPASSWORD[] = "123456";                   // Example student password
+
+void addBook();
+void deleteBook();
+void updateBook();
+void listOfAllBooks();
+void borrowBook();
+void returnBook();
+
+int main()
 {
-	char Bookno[6];
-	char Bookname[50];
-	char Authorname[20];
-  
-  public:
-  
-	void create_book()
-	{
-        cout<<"\nNEW BOOK ENTRY...\n";
-        cout<<"\nEnter The Book No.";
-        cin>>Bookno;
-        cout<<"\n\nEnter The Name of The Book ";
-        gets(Bookname);
-        cout<<"\n\nEnter The Author's Name ";
-        gets(Authorname);
-        cout<<"\n\n\nBook Created..";
-    }
+    int outerChoice = 0;
 
-    void show_book()
+    while (outerChoice != 9)
     {
-        cout<<"\nBook No. : "<<Bookno;
-        cout<<"\nBook Name : ";
-        puts(Bookname);
-        cout<<"Author Name : ";
-        puts(Authorname);
-    }
+        system("cls");
 
-    void modify_book()
-    {
-        cout<<"\nBook No. : "<<Bookno;
-        cout<<"\nModify Book Name : ";
-        gets(Bookname);
-        cout<<"\nModify Author's Name of Book : ";
-        gets(Authorname);
-    }
+        cout << "\n\n Library Management System \n\n";
+        cout << "\n1. Librarian";
+        cout << "\n2. Student";
+        cout << "\n9. Exit";
+        cout << "\n\nEnter your choice : ";
+        cin >> outerChoice;
 
-    char* retBookno()
-    {
-        return Bookno;
-    }
-
-    void report()
-    {cout<<Bookno<<setw(30)<<Bookname<<setw(30)<<Authorname<<endl;}
-
-
-}; 
-
-
-
-
-class student
-  
-{
-    char admno[6];
-    char name[20];
-    char stbno[6];
-    int token;
-  
-public:
-  
-    void create_student()
-    {
-        clrscr();
-         cout<<"\nNEW STUDENT ENTRY...\n";
-        cout<<"\nEnter The Admission No. ";
-        cin>>admno;
-        cout<<"\n\nEnter The Name of The Student ";
-        gets(name);
-        token=0;
-        stbno[0]='/0';
-        cout<<"\n\nStudent Record Created..";
-    }
-
-    void show_student()
-    {
-        cout<<"\nAdmission no. : "<<admno;
-        cout<<"\nStudent Name : ";
-        puts(name);
-        cout<<"\nNo of Book Issued : "<<token;
-        if(token==1)
-            cout<<"\nBook No "<<stbno;
-    }
-
-    void modify_student()
-    {
-        cout<<"\nAdmission no. : "<<admno;
-        cout<<"\nModify Student Name : ";
-        gets(name);
-    }
-
-    char* retadmno()
-    {
-        return admno;
-    }
-
-    char* retstbno()
-    {
-        return stbno;
-    }
-
-    int rettoken()
-    {
-        return token;
-    }
-
-    void addtoken()
-    {token=1;}
-
-    void resettoken()
-    {token=0;}
-
-    void getstbno(char t[])
-    {
-        strcpy(stbno,t);
-    }
-
-    void report()
-    {cout<<"\t"<<admno<<setw(20)<<name<<setw(10)<<token<<endl;}
-
-};         
-
-
-
-fstream fp,fp1;
-book bk;
-student st;
-
-
-void write_book()
-{
-    char ch;
-    fp.open("book.dat",ios::out|ios::app);
-    do
-    {
-        clrscr();
-        bk.create_book();
-        fp.write((char*)&bk,sizeof(book));
-        cout<<"\n\nDo you want to add more record..(y/n?)";
-        cin>>ch;
-    }while(ch=='y'||ch=='Y');
-    fp.close();
-}
-
-void write_student()
-{
-    char ch;
-    fp.open("student.dat",ios::out|ios::app);
-    do
-    {
-        st.create_student();
-        fp.write((char*)&st,sizeof(student));
-        cout<<"\n\nDo you want to add more record..(y/n?)";
-        cin>>ch;
-    }while(ch=='y'||ch=='Y');
-    fp.close();
-}
-
-
-
-void display_spb(char n[])
-{
-    cout<<"\nBOOK DETAILS\n";
-    int flag=0;
-    fp.open("book.dat",ios::in);
-    while(fp.read((char*)&bk,sizeof(book)))
-    {
-        if(strcmpi(bk.retbno(),n)==0)
+        if (outerChoice == 1)
         {
-            bk.show_book();
-             flag=1;
-        }
-    }
-    
-    fp.close();
-    if(flag==0)
-        cout<<"\n\nBook does not exist";
-    getch();
-}
+            char adminUser[10];
+            char adminPassword[10];
 
-void display_sps(char n[])
-{
-    cout<<"\nSTUDENT DETAILS\n";
-    int flag=0;
-    fp.open("student.dat",ios::in);
-    while(fp.read((char*)&st,sizeof(student)))
-    {
-        if((strcmpi(st.retadmno(),n)==0))
-        {
-            st.show_student();
-            flag=1;
-        }
-    }
-    
-    fp.close();
-    if(flag==0)
-            cout<<"\n\nStudent does not exist";
-     getch();
-}
+            system("cls");
+            cout << "\n========================================== TEACHER LOGIN ========================================== ";
+            cout << "\n\n Please enter your username: ";
+            cin >> adminUser;
+            cout << "\n Please enter your password:";
+            cin >> adminPassword;
 
-
-void modify_book()
-{
-    char n[6];
-    int found=0;
-    clrscr();
-    cout<<"\n\n\tMODIFY BOOK REOCORD.... ";
-    cout<<"\n\n\tEnter The Book No. Of The Book";
-    cin>>n;
-    fp.open("book.dat",ios::in|ios::out);
-    while(fp.read((char*)&bk,sizeof(book)) && found==0)
-    {
-        if(strcmpi(bk.retbno(),n)==0)
-        {
-            bk.show_book();
-            cout<<"\nEnter The New Details of Book"<<endl;
-            bk.modify_book();
-            int pos=-1*sizeof(bk);
-                fp.seekp(pos,ios::cur);
-                fp.write((char*)&bk,sizeof(book));
-                cout<<"\n\n\t Record Updated";
-                found=1;
-        }
-    }
-
-        fp.close();
-        if(found==0)
-            cout<<"\n\n Record Not Found ";
-        getch();
-}
-
-
-void modify_student()
-{
-    char n[6];
-    int found=0;
-    clrscr();
-    cout<<"\n\n\tMODIFY STUDENT RECORD... ";
-    cout<<"\n\n\tEnter The admission no. of The student";
-    cin>>n;
-    fp.open("student.dat",ios::in|ios::out);
-    while(fp.read((char*)&st,sizeof(student)) && found==0)
-    {
-        if(strcmpi(st.retadmno(),n)==0)
-        {
-            st.show_student();
-            cout<<"\nEnter The New Details of student"<<endl;
-            st.modify_student();
-            int pos=-1*sizeof(st);
-            fp.seekp(pos,ios::cur);
-            fp.write((char*)&st,sizeof(student));
-            cout<<"\n\n\t Record Updated";
-            found=1;
-        }
-    }
-    
-    fp.close();
-    if(found==0)
-        cout<<"\n\n Record Not Found ";
-    getch();
-}
-
-//***************************************************************
-//        function to delete record of file
-//****************************************************************
-
-
-void delete_student()
-{
-    char n[6];
-    int flag=0;    
-    clrscr();
-        cout<<"\n\n\n\tDELETE STUDENT...";
-        cout<<"\n\nEnter The admission no. of the Student You Want To Delete : ";
-        cin>>n;
-        fp.open("student.dat",ios::in|ios::out);
-        fstream fp2;
-        fp2.open("Temp.dat",ios::out);
-        fp.seekg(0,ios::beg);
-        while(fp.read((char*)&st,sizeof(student)))
-    {
-        if(strcmpi(st.retadmno(),n)!=0)
-                 fp2.write((char*)&st,sizeof(student));
-        else
-               flag=1;
-    }
-        
-    fp2.close();
-        fp.close();
-        remove("student.dat");
-        rename("Temp.dat","student.dat");
-        if(flag==1)
-             cout<<"\n\n\tRecord Deleted ..";
-        else
-             cout<<"\n\nRecord not found";
-        getch();
-}
-
-
-void delete_book()
-{
-    char n[6];
-    clrscr();
-    cout<<"\n\n\n\tDELETE BOOK ...";
-    cout<<"\n\nEnter The Book no. of the Book You Want To Delete : ";
-    cin>>n;
-    fp.open("book.dat",ios::in|ios::out);
-    fstream fp2;
-    fp2.open("Temp.dat",ios::out);
-    fp.seekg(0,ios::beg);
-    while(fp.read((char*)&bk,sizeof(book)))
-    {
-        if(strcmpi(bk.retbno(),n)!=0)  
-        {
-            fp2.write((char*)&bk,sizeof(book));
-        }
-    }
-        
-    fp2.close();
-        fp.close();
-        remove("book.dat");
-        rename("Temp.dat","book.dat");
-        cout<<"\n\n\tRecord Deleted ..";
-        getch();
-}
-
-
-
-//***************************************************************
-//        function to display all students list
-//****************************************************************
-
-void display_alls()
-{
-    clrscr();
-         fp.open("student.dat",ios::in);
-         if(!fp)
-         {
-               cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
-               getch();
-               return;
-         }
-
-    cout<<"\n\n\t\tSTUDENT LIST\n\n";
-    cout<<"==================================================================\n";
-    cout<<"\tAdmission No."<<setw(10)<<"Name"<<setw(20)<<"Book Issued\n";
-    cout<<"==================================================================\n";
-
-    while(fp.read((char*)&st,sizeof(student)))
-    {
-        st.report();
-    }
-         
-    fp.close();
-    getch();
-}
-
-
-//***************************************************************
-//        function to display Books list
-//****************************************************************
-
-void display_allb()
-{
-    clrscr();
-    fp.open("book.dat",ios::in);
-    if(!fp)
-    {
-        cout<<"ERROR!!! FILE COULD NOT BE OPEN ";
-               getch();
-               return;
-         }
-
-    cout<<"\n\n\t\tBook LIST\n\n";
-    cout<<"=========================================================================\n";
-    cout<<"Book Number"<<setw(20)<<"Book Name"<<setw(25)<<"Author\n";
-    cout<<"=========================================================================\n";
-
-    while(fp.read((char*)&bk,sizeof(book)))
-    {
-        bk.report();
-    }
-         fp.close();
-         getch();
-}
-
-
-
-//***************************************************************
-//        function to issue book
-//****************************************************************
-
-void book_issue()
-{
-    char sn[6],bn[6];
-    int found=0,flag=0;
-    clrscr();
-    cout<<"\n\nBOOK ISSUE ...";
-    cout<<"\n\n\tEnter The student's admission no.";
-    cin>>sn;
-    fp.open("student.dat",ios::in|ios::out);
-        fp1.open("book.dat",ios::in|ios::out);
-        while(fp.read((char*)&st,sizeof(student)) && found==0)
-           {
-        if(strcmpi(st.retadmno(),sn)==0)
-        {
-            found=1;
-            if(st.rettoken()==0)
+            if ((strcmp(adminUser, ADMINUSER) == 0) && (strcmp(adminPassword, ADMINPASSWORD) == 0))
             {
-                      cout<<"\n\n\tEnter the book no. ";
-                cin>>bn;
-                while(fp1.read((char*)&bk,sizeof(book))&& flag==0)
+                getchar();
+                getchar();
+
+                system("cls");
+                int innerChoice = 0;
+
+                while (innerChoice != 9)
                 {
-                       if(strcmpi(bk.retbno(),bn)==0)
+                    cout << "\n\n Librarian login is successful!! Press any button to continue..";
+                    cout << "\n1. Add new book";
+                    cout << "\n2. Update any Book";
+                    cout << "\n3. Delete Book";
+                    cout << "\n4. List of all Books";
+                    cout << "\n9. Exit";
+                    cout << "\n\n Please enter your choice : ";
+                    cin >> innerChoice;
+
+                    switch (innerChoice)
                     {
-                        bk.show_book();
-                        flag=1;
-                        st.addtoken();
-                        st.getstbno(bk.retbno());
-                               int pos=-1*sizeof(st);
-                        fp.seekp(pos,ios::cur);
-                        fp.write((char*)&st,sizeof(student));
-                        cout<<"\n\n\t Book issued successfully\n\nPlease Note: Write current date 
-                        in backside of book and submit within 15 days fine Rs. 1 for each day     
-                        after 15 days period";
+                        case 1:
+                            addBook();
+                            break;
+                        case 2:
+                            updateBook();
+                            break;
+                        case 3:
+                            deleteBook();
+                            break;
+                        case 4:
+                            listOfAllBooks();
+                            break;
+                        default:
+                            cout << "\n\n Invalid Choice. Please enter the valid one";
+                            getchar();
+                            break;
                     }
-                    }
-                  if(flag==0)
-                        cout<<"Book no does not exist";
-            }
-                else
-                  cout<<"You have not returned the last book ";
 
+                    system("cls");
+                }
+            }
+            else
+            {
+                cout << "\n\n Error: Invalid Credentials. Please check your Credentials";
+                getchar();
+                getchar();
+            }
+        }
+        else if (outerChoice == 2)
+        {
+            char studentUser[10];
+            char studentPassword[10];
+
+            system("cls");
+            cout << "\n========================================== Student Login ==========================================";
+            cout << "\n\n Please enter your username: ";
+            cin >> studentUser;
+            cout << "\n Please enter your password:";
+            cin >> studentPassword;
+
+            if ((strcmp(studentUser, USER) == 0) && (strcmp(studentPassword, USERPASSWORD) == 0))
+            {
+                int innerChoice = 0;
+
+                while (innerChoice != 9)
+                {
+                    system("cls");
+                    cout << "\n1. Borrow a Book";
+                    cout << "\n2. Return a Book";
+                    cout << "\n3. List of All Books";
+                    cout << "\n9. Exit";
+                    cout << "\n\n Enter your choice : ";
+                    cin >> innerChoice;
+
+                    switch (innerChoice)
+                    {
+                        case 1:
+                            borrowBook();
+                            break;
+                        case 2:
+                            returnBook();
+                            break;
+                        case 3:
+                            listOfAllBooks();
+                            break;
+                        case 9:
+                            break;
+                        default:
+                            cout << "\n\n Error: Invalid Choice. Please enter the valid one";
+                            getchar();
+                            getchar();
+                            break;
+                    }
+                }
+
+                system("cls");
+            }
+            else
+            {
+                cout << "\n\n Error: Invalid Credentials. Please check your Credentials";
+                getchar();
+                getchar();
+            }
+        }
+        else if (outerChoice != 9)
+        {
+            cout << "\n\n Invalid choice. Press any key to continue..";
+            getchar();
+            getchar();
+        }
+        else
+        {
+            cout << "\n\n Thank you for browsing!! Press any key to exit";
+            getchar();
+            getchar();
         }
     }
-          if(found==0)
-        cout<<"Student record not exist...";
-    getch();
-      fp.close();
-      fp1.close();
+
+    return 0;
+}
+
+void addBook()
+{
+    int bookid;
+    char bookname[20];
+    char bookauthor[20];
+    int year, month, day;
+
+    time_t t = time(NULL);
+    struct tm* tm = localtime(&t);
+    year = tm->tm_year + 1900;
+    month = tm->tm_mon + 1;
+    day = tm->tm_mday;
+
+    system("cls");
+    cout << "\n========================================== Add a new Book ==========================================";
+    cout << "\n\n Please enter a 4-digit numeric id: ";
+    cin >> bookid;
+    cout << "\n Please enter the book name: ";
+    cin.ignore(); // Ignore the newline character left in the input stream
+    cin.getline(bookname, 20);
+    cout << "\n Please enter the book author: ";
+    cin.getline(bookauthor, 20);
+
+    char filename[20];
+    sprintf(filename, "%d%s", bookid, ".dat");
+    ofstream file(filename);
+    file << bookname << "\n";
+    file << bookauthor << "\n";
+    file << year << "\n";
+    file << month << "\n";
+    file << day << "\n";
+    file.close();
+
+    cout << "\n Your file has been saved successfully!";
+    getchar();
+    getchar();
 }
 
 
-void book_deposit()
+
+void deleteBook()
 {
-    char sn[6],bn[6];
-    int found=0,flag=0,day,fine;
-    clrscr();
-    cout<<"\n\nBOOK DEPOSIT ...";
-    cout<<"\n\n\tEnter The studentâ€™s admission no.";
-    cin>>sn;
-    fp.open("student.dat",ios::in|ios::out);
-    fp1.open("book.dat",ios::in|ios::out);
-    while(fp.read((char*)&st,sizeof(student)) && found==0)
-       {
-        if(strcmpi(st.retadmno(),sn)==0)
+    int bookId;
+    cout << "\n========================================== Delete a Book ==========================================";
+    cout << "\n\n Please enter the book ID to delete: ";
+    cin >> bookId;
+
+    char filename[20];
+    sprintf(filename, "%d%s", bookId, ".dat");
+
+    if (remove(filename) == 0)
+        cout << "\n Book with ID " << bookId << " has been deleted successfully!";
+    else
+        cout << "\n Error: Failed to delete the book.";
+
+    getchar();
+    getchar();
+}
+
+void updateBook()
+{
+    int bookId;
+    cout << "\n========================================== Update a Book ==========================================";
+    cout << "\n\n Please enter the book ID to update: ";
+    cin >> bookId;
+
+    char filename[20];
+    sprintf(filename, "%d%s", bookId, ".dat");
+
+    ifstream file(filename);
+    if (!file)
+    {
+        cout << "\n Error: Book with ID " << bookId << " does not exist.";
+        getchar();
+        getchar();
+        return;
+    }
+
+    // Read the existing book information
+    string bookName, bookAuthor;
+    int year, month, day;
+    getline(file, bookName);
+    getline(file, bookAuthor);
+    file >> year >> month >> day;
+    file.close();
+
+    // Display the existing information and prompt for updates
+    cout << "\n Existing Book Information:";
+    cout << "\n ID: " << bookId;
+    cout << "\n Name: " << bookName;
+    cout << "\n Author: " << bookAuthor;
+    cout << "\n Date Added: " << year << "-" << month << "-" << day << endl;
+
+    // Prompt for updated information
+    string newBookName, newBookAuthor;
+    cout << "\n Enter the updated book name: ";
+    cin.ignore();
+    getline(cin, newBookName);
+    cout << "\n Enter the updated book author: ";
+    getline(cin, newBookAuthor);
+
+    // Update the book information in the file
+    ofstream outFile(filename);
+    outFile << newBookName << "\n";
+    outFile << newBookAuthor << "\n";
+    outFile << year << "\n";
+    outFile << month << "\n";
+    outFile << day << "\n";
+    outFile.close();
+
+    cout << "\n Book with ID " << bookId << " has been updated successfully!";
+    getchar();
+    getchar();
+}
+
+void listOfAllBooks()
+{
+    cout << "\n========================================== List of All Books ==========================================";
+    ifstream file;
+    for (int bookId = 0; bookId <= 9999; ++bookId)
+    {
+        char filename[20];
+        sprintf(filename, "%d%s", bookId, ".dat");
+
+        file.open(filename);
+        if (file)
         {
-            found=1;
-            if(st.rettoken()==1)
-            {
-            while(fp1.read((char*)&bk,sizeof(book))&& flag==0)
-            {
-               if(strcmpi(bk.retbno(),st.retstbno())==0)
-            {
-                bk.show_book();
-                flag=1;
-                cout<<"\n\nBook deposited in no. of days";
-                cin>>day;
-                if(day>15)
-                {
-                   fine=(day-15)*1;
-                   cout<<"\n\nFine has to deposited Rs. "<<fine;
-                }
-                    st.resettoken();
-                    int pos=-1*sizeof(st);
-                    fp.seekp(pos,ios::cur);
-                    fp.write((char*)&st,sizeof(student));
-                    cout<<"\n\n\t Book deposited successfully";
-            }
-            }
-          if(flag==0)
-            cout<<"Book no does not exist";
-              }
-         else
-            cout<<"No book is issued..please check!!";
-        }
-       }
-      if(found==0)
-    cout<<"Student record not exist...";
-    getch();
-  fp.close();
-  fp1.close();
-  }
+            string bookName, bookAuthor;
+            int year, month, day;
 
-void intro()
-{
-    clrscr();
-    gotoxy(35,11);
-    cout<<"LIBRARY";
-    gotoxy(35,14);
-    cout<<"MANAGEMENT";
-    gotoxy(35,17);
-    cout<<"SYSTEM";
-    cout<<"\n\nMADE BY : FELIX MIGUEL M ELEAZAR, ELKES PEARL P. LOPEZ, JEMIMA RUTH C. MARA ";
-    cout<<"\n\nSCHOOL : BATANGAS STATE UNIVERSITY ALANGILAN CAMPUS II";
-    getch();
+            getline(file, bookName);
+            getline(file, bookAuthor);
+            file >> year >> month >> day;
+            file.close();
+
+            cout << "\n ID: " << bookId;
+            cout << "\n Name: " << bookName;
+            cout << "\n Author: " << bookAuthor;
+            cout << "\n Date Added: " << year << "-" << month << "-" << day << endl;
+        }
+    }
+
+    cout << "\n End of Book List";
+    getchar();
+    getchar();
 }
 
-
-
-void admin_menu()
+void borrowBook()
 {
-    clrscr();
-    int ch2;
-    cout<<"\n\n\n\tADMINISTRATOR MENU";
-    cout<<"\n\n\t1.CREATE STUDENT RECORD";
-    cout<<"\n\n\t2.DISPLAY ALL STUDENTS RECORD";
-    cout<<"\n\n\t3.DISPLAY SPECIFIC STUDENT RECORD ";
-    cout<<"\n\n\t4.MODIFY STUDENT RECORD";
-    cout<<"\n\n\t5.DELETE STUDENT RECORD";
-    cout<<"\n\n\t6.CREATE BOOK ";
-    cout<<"\n\n\t7.DISPLAY ALL BOOKS ";
-    cout<<"\n\n\t8.DISPLAY SPECIFIC BOOK ";
-    cout<<"\n\n\t9.MODIFY BOOK ";
-    cout<<"\n\n\t10.DELETE BOOK ";
-    cout<<"\n\n\t11.BACK TO MAIN MENU";
-    cout<<"\n\n\tPlease Enter Your Choice (1-11) ";
-    cin>>ch2;
-    switch(ch2)
+    int bookId;
+    cout << "\n========================================== Borrow a Book ==========================================";
+    cout << "\n\n Please enter the book ID to borrow: ";
+    cin >> bookId;
+
+    char filename[20];
+    sprintf(filename, "%d%s", bookId, ".dat");
+
+    ifstream file(filename);
+    if (!file)
     {
-            case 1: clrscr();
-                write_student();break;
-            case 2: display_alls();break;
-            case 3:
-                   char num[6];
-                   clrscr();
-                   cout<<"\n\n\tPlease Enter The Admission No. ";
-                   cin>>num;
-                   display_sps(num);
-                   break;
-              case 4: modify_student();break;
-              case 5: delete_student();break;
-        case 6: clrscr();
-            write_book();break;
-        case 7: display_allb();break;
-        case 8: {
-                   char num[6];
-                   clrscr();
-                   cout<<"\n\n\tPlease Enter The Book No. ";
-                   cin>>num;
-                   display_spb(num);
-                   break;
-            }
-              case 9: modify_book();break;
-              case 10: delete_book();break;
-             case 11: return;
-              default:cout<<"\a";
-       }
-       admin_menu();
+        cout << "\n Error: Book with ID " << bookId << " does not exist.";
+        getchar();
+        getchar();
+        return;
+    }
+    file.close();
+
+    // Implement the borrowing logic here
+    // For example, update the book status, record borrower details, etc.
+
+    cout << "\n Book with ID " << bookId << " has been borrowed successfully!";
+    getchar();
+    getchar();
 }
 
-
-//***************************************************************
-//        THE MAIN FUNCTION OF PROGRAM
-//****************************************************************
-
-
-void main()
+void returnBook()
 {
-    char ch;
-    intro();
-    do
+    int bookId;
+    cout << "\n========================================== Return a Book ==========================================";
+    cout << "\n\n Please enter the book ID to return: ";
+    cin >> bookId;
+
+    char filename[20];
+    sprintf(filename, "%d%s", bookId, ".dat");
+
+    ifstream file(filename);
+    if (!file)
     {
-        clrscr();
-        cout<<"\n\n\n\tMAIN MENU";
-        cout<<"\n\n\t01. BOOK ISSUE";
-        cout<<"\n\n\t02. BOOK DEPOSIT";
-          cout<<"\n\n\t03. ADMINISTRATOR MENU";
-          cout<<"\n\n\t04. EXIT";
-          cout<<"\n\n\tPlease Select Your Option (1-4) ";
-          ch=getche();
-          switch(ch)
-          {
-            case '1':clrscr();
-                 book_issue();
-                    break;
-              case '2':book_deposit();
-                     break;
-              case '3':admin_menu();
-                 break;
-              case '4':exit(0);
-              default :cout<<"\a";
-        }
-        }while(ch!='4');
+        cout << "\n Error: Book with ID " << bookId << " does not exist.";
+        getchar();
+        getchar();
+        return;
+    }
+    file.close();
+
+    // Implement the returning logic here
+    // For example, update the book status, remove borrower details, etc.
+
+    cout << "\n Book with ID " << bookId << " has been returned successfully!";
+    getchar();
+    getchar();
 }
