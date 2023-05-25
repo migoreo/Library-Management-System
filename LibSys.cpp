@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cstring>
+#include <string>
 #include <fstream>
 #include <ctime>
 
@@ -50,6 +50,7 @@ int main()
                 getchar();
 
                 system("cls");
+
                 int innerChoice = 0;
 
                 while (innerChoice != 9)
@@ -99,6 +100,7 @@ int main()
             char studentPassword[10];
 
             system("cls");
+
             cout << "\n========================================== Student Login ==========================================";
             cout << "\n\n Please enter your username: ";
             cin >> studentUser;
@@ -112,6 +114,7 @@ int main()
                 while (innerChoice != 9)
                 {
                     system("cls");
+
                     cout << "\n1. Borrow a Book";
                     cout << "\n2. Return a Book";
                     cout << "\n3. List of All Books";
@@ -173,11 +176,15 @@ void addBook()
     char bookauthor[20];
     int year, month, day;
 
-    time_t t = time(NULL);
-    struct tm* tm = localtime(&t);
-    year = tm->tm_year + 1900;
-    month = tm->tm_mon + 1;
-    day = tm->tm_mday;
+    struct tm tmObj;
+	time_t timeObj;
+	localtime_s(&tmObj, &timeObj);
+
+//	tmObj.tm_year  Correct usage of dot operator to access 'tm_year' member
+
+    tmObj.tm_year + 1900;
+    tmObj.tm_mon + 1;
+    tmObj.tm_mday;
 
     system("cls");
     cout << "\n========================================== Add a new Book ==========================================";
@@ -214,7 +221,7 @@ void deleteBook()
     cin >> bookId;
 
     char filename[20];
-    sprintf(filename, "%d%s", bookId, ".dat");
+    sprintf_s(filename, "%d%s", bookId, ".dat");
 
     if (remove(filename) == 0)
         cout << "\n Book with ID " << bookId << " has been deleted successfully!";
@@ -362,7 +369,7 @@ void returnBook()
     file.close();
 
     // Implement the returning logic here
-    // For example, update the book status, remove borrower details, etc.
+    // For example, update the book status,		remove borrower details, etc.
 
     cout << "\n Book with ID " << bookId << " has been returned successfully!";
     getchar();
