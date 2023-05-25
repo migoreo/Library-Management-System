@@ -342,33 +342,40 @@ void updateBook()
     getchar();
 }
 
+
 void listOfAllBooks()
 {
-    system("cls");
+    cout << "\n========================================== List of All Books ==========================================";
 
     ifstream file("bookdatabase.txt");
-
-    int bookid;
-    string bookname;
-    string bookauthor;
-    int year, month, day;
-    double lateFee;
-
-    while (file >> bookid && getline(file, bookname) && getline(file, bookauthor) &&
-        file >> year >> month >> day && file >> lateFee)
+    if (file.is_open())
     {
-        cout << "\n\n Book ID : " << bookid;
-        cout << "\n Book Name : " << bookname;
-        cout << "\n Book Author : " << bookauthor;
-        cout << "\n Publication Date : " << day << "/" << month << "/" << year;
-        cout << "\n Late Fee/Penalty : $" << lateFee;
+        int bookId;
+        string bookName, bookAuthor;
+        int year, month, day;
+        double lateFee;
+
+        while (file >> bookId >> ws && getline(file, bookName) && getline(file, bookAuthor) && file >> year >> month >> day >> lateFee)
+        {
+            cout << "\n ID: " << bookId;
+            cout << "\n Name: " << bookName;
+            cout << "\n Author: " << bookAuthor;
+            cout << "\n Date Added: " << year << "-" << month << "-" << day;
+            cout << "\n Late Fee: " << lateFee << "\n";
+        }
+
+        file.close();
+    }
+    else
+    {
+        cout << "\n\n Unable to open the database file.";
     }
 
-    file.close();
-
+    cout << "\n\n End of Book List";
     getchar();
     getchar();
 }
+
 
 void borrowBook()
 {
